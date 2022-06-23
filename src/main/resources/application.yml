@@ -2,16 +2,29 @@ server:
   port: 8080
 spring:
   mail:
+    port: 465
     host: smtp.163.com
     username: swimmingsure@163.com
     password: QZYIZDIYPVVLUUSJ
-    default-encoding: UTF-8
-
+    default-encoding: utf-8
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+            socketFactory:
+              port: 465
+              class: javax.net.ssl.SSLSocketFactory
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-      username: root
+      url: jdbc:mysql://114.55.38.248:3306/sun_take_out?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: Gavin
       password: root
 mybatis-plus:
   configuration:
@@ -22,4 +35,4 @@ mybatis-plus:
     db-config:
       id-type: ASSIGN_ID
 file-load:    #文件上传路径
-  path: E:\JAVA项目\reggie\uploadpic\
+  path: /uploadpic/

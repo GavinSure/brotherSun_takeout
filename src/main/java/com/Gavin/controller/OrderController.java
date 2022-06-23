@@ -4,10 +4,9 @@ import com.Gavin.common.R;
 import com.Gavin.entity.Orders;
 import com.Gavin.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author: Gavin
@@ -28,5 +27,10 @@ public class OrderController {
     public R<String> submit(@RequestBody Orders orders){
         orderService.submit(orders);
         return R.success("下单成功");
+    }
+
+    @GetMapping("/userPage")
+    public R<List<Orders>> userPage(int page,int pageSize){
+        return null;
     }
 }
