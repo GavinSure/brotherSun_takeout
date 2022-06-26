@@ -26,7 +26,7 @@ public class MailUtil {
         message.setFrom(FROM);
         message.setTo(toEmail);
         message.setSubject("邮箱登录验证码");
-        message.setText("您的验证码："+code+"  两分钟内有效");
+        message.setText("您的验证码："+code+"  五分钟内有效");
         javaMailSender.send(message);
     }
 
