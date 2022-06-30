@@ -1,5 +1,6 @@
 package com.Gavin.controller;
 
+import com.Gavin.common.BaseContext;
 import com.Gavin.common.R;
 import com.Gavin.dto.DishDto;
 import com.Gavin.dto.OrdersDto;
@@ -42,6 +43,38 @@ public class OrderController {
 
     @GetMapping("/userPage")
     public R<Page> userPage(int page, int pageSize){
+        Page<Orders> pageInfo=new Page<>(page,pageSize);
+        Page<OrdersDto> ordersDtoPage=new Page<>(page,pageSize);
+        LambdaQueryWrapper<Orders> queryWrapper=new LambdaQueryWrapper();
+
+        Long userId = BaseContext.getCurrentId();
+
+        queryWrapper.eq(Orders::getUserId,userId);
+        queryWrapper.orderByDesc(Orders::getOrderTime);
+
+        orderService.page(pageInfo,queryWrapper);
+
+        //封装dto
+        BeanUtils.copyProperties(pageInfo, ordersDtoPage,"records");
+        List<Orders> records=pageInfo.getRecords();
+
+        List<OrdersDto> list=records.stream().map((item)->{
+            OrdersDto ordersDto=new OrdersDto();
+            BeanUtils.copyProperties(item,ordersDto);
+            Long id = item.getId();
+            LambdaQueryWrapper<OrderDetail> wrapper=new LambdaQueryWrapper<>();
+            wrapper.eq(OrderDetail::getOrderId,id);
+            List<OrderDetail> list1 = detailService.list(wrapper);
+            ordersDto.setOrderDetails(list1);
+            return  ordersDto;
+        }).collect(Collectors.toList());
+
+        ordersDtoPage.setRecords(list);
+        return R.success(ordersDtoPage);
+    }
+
+    @GetMapping("/page")
+    public R<Page> Page(int page,int pageSize){
         Page<Orders> pageInfo=new Page<>(page,pageSize);
         Page<OrdersDto> ordersDtoPage=new Page<>(page,pageSize);
         LambdaQueryWrapper<Orders> queryWrapper=new LambdaQueryWrapper();
